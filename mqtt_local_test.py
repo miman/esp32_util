@@ -3,77 +3,70 @@ import time
 import ujson as json
 from libs.mqtt_connection import MqttConnection
 from libs.wifi_connection import WifiConnection
+from config import mqtt_settings
 
-mqtt_username="TBD"
-mqtt_password="TBD"
+# This is a test class which sends a message to the AWS IoT topic '/txt/write' whenever you press the BOOT button.
+# It also listens to 2 topics
+# - '/txt/write' -> the string in field content is written to the console
+# - '/btn/set' -> the blue led is turned on/off based on the value in the field "state" (can be "on" or "off")
 
-led = machine.Pin(2, machine.Pin.OUT)
-sw = machine.Pin(0, machine.Pin.IN)
-# tim0 = machine.Timer(0)
+class NormalMqttTest:
+    def __init__(self):
+        self.mqtt_username=mqtt_settings.username
+        self.mqtt_password=mqtt_settings.password
+        self.led = machine.Pin(2, machine.Pin.OUT)
+        self.sw = machine.Pin(0, machine.Pin.IN)
+        # self.tim0 = machine.Timer(0)
+        self.HTTP_HEADERS = {'Content-Type': 'application/json'}
+        self.UPDATE_INTERVAL_ms = 30000 # in ms time unit
+        self.last_update = time.ticks_ms()
+        self.sw.irq(trigger=machine.Pin.IRQ_FALLING, handler=self.handle_callback)
+        self.led.off()
+        self.CLIENT_ID = b'ESP32_1'  # Should be unique for each device connected.
+        self.MQTT_ENDPOINT = mqtt_settings.mqtt_host
+        self.TOPIC_SUB = b"#"
 
-# **************************************
-# Constants and variables:
-HTTP_HEADERS = {'Content-Type': 'application/json'}
+    def handle_callback(self, pin):
+        # Ensure we are called directly
+        self.last_update = time.ticks_ms() - self.UPDATE_INTERVAL_ms + 200
+        # print('Button pressed')
 
-UPDATE_INTERVAL_ms = 30000 # in ms time unit
-last_update = time.ticks_ms()
+    def handle_mqtt_msg(self, topic, msg):
+        if (topic == "/btn/set"):
+            obj = json.loads(msg)
+            if (obj["state"] == "on"):
+                self.led.on()
+            else:
+                self.led.off()
+        elif (topic == "/txt/write"):
+            obj = json.loads(msg)
+            print("msg content: " + obj["content"])
+    
+    def sub_callback(self, topic, msg):
+        msg_str = msg.decode()
+        topic_str = topic.decode()
+        print("msg received @ '" + topic_str + "': " + msg_str)
+        self.handle_mqtt_msg(topic_str, msg_str)
 
-def handle_callback(pin):
-    global last_update
-    # Ensure we are called directly
-    last_update = time.ticks_ms() - UPDATE_INTERVAL_ms + 200
-    # print('Button pressed')
+    def init(self):
+        # Connect to MQTT broker.
+        self.mqtt = MqttConnection()
+        self.mqtt.connect_to_mqtt( host_endpoint=self.MQTT_ENDPOINT, client_id=self.CLIENT_ID,
+                                   username=self.mqtt_username, password=self.mqtt_password, sub_callback=self.sub_callback )
+        self.mqtt.subscribe(self.TOPIC_SUB)
 
-sw.irq(trigger=machine.Pin.IRQ_FALLING, handler=handle_callback)
-
-led.off()
-
-def handle_mqtt_msg(topic, msg):
-    if (topic == "/btn/set"):
-        obj = json.loads(msg)
-        if (obj["state"] == "on"):
-            led.on()
-        else:
-            led.off()
-    elif (topic == "/txt/write"):
-        obj = json.loads(msg)
-        print("msg content: " + obj["content"])
-        
-def sub_callback(topic, msg):
-    msg_str = msg.decode()
-    topic_str = topic.decode()
-    print("msg received @ '" + topic_str + "': " + msg_str)
-    handle_mqtt_msg(topic_str, msg_str)
-
-# **************************************
-# Connect to Internet over Wifi
-wifi = WifiConnection()
-wifi.connect()
-
-# Connect to MQTT broker.
-CLIENT_ID = b'ESP32_1'  # Should be unique for each device connected.
-MQTT_ENDPOINT = b'192.168.68.121'
-TOPIC_SUB = b"#"
-mqtt = MqttConnection()
-mqtt.connect_to_mqtt( host_endpoint=MQTT_ENDPOINT, client_id=CLIENT_ID, username=mqtt_username, password=mqtt_password, sub_callback=sub_callback )
-mqtt.subscribe(TOPIC_SUB)
-
-# **************************************
-# Main loop:
-while True: 
-    if time.ticks_ms() - last_update >= UPDATE_INTERVAL_ms:
-        print('Requesting data...')
-        last_update = time.ticks_ms()
-        obj = {
-            "time": last_update,
-            "msg": "Howdey :-)"
-        }
-        json_str = json.dumps(obj)
-        mqtt.send_mqtt_msg(json_str, 'test/esp32/hi')
-    try:  
-        #mqtt.wait_msg() #blocking  
-        mqtt.check_msg() #non-blocking  
-    except KeyboardInterrupt:  
-        print('Ctrl-C pressed...exiting')  
-        mqtt.disconnect()  
-        sys.exit()
+    # **************************************
+    # Main loop:
+    def process(self):
+        while True: 
+            if time.ticks_ms() - self.last_update >= self.UPDATE_INTERVAL_ms:
+                print('Requesting data...')
+                self.last_update = time.ticks_ms()
+                obj = {
+                    "time": self.last_update,
+                    "msg": "Howdey :-)"
+                }
+                json_str = json.dumps(obj)
+                self.mqtt.send_mqtt_msg(json_str, 'test/esp32/hi')
+                #self.mqtt.wait_msg() #blocking  
+                self.mqtt.check_msg() #non-blocking  
