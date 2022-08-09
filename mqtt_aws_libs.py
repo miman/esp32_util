@@ -3,48 +3,43 @@ import time
 import ujson as json
 from libs.mqtt_connection import MqttConnection
 from libs.wifi_connection import WifiConnection
+from libs.global_props import GlobalProperties
 
-# This is a test class which sends a message to the AWS IoT topic '/txt/write' whenever you press the BOOT button.
+# This is a MQTT class which creates an MQTT connection to an AWS IoT MQTT broker
 # It also listens to 2 topics
 # - '/txt/write' -> the string in field content is written to the console
 # - '/btn/set' -> the blue led is turned on/off based on the value in the field "state" (can be "on" or "off")
 class AwsMqttTest:
     def __init__(self):
         self.led = machine.Pin(2, machine.Pin.OUT)
-        self.sw = machine.Pin(0, machine.Pin.IN)
-        self.tim0 = machine.Timer(0)
-        self.CLIENTID = 'esp32_t2'  # Should be unique for each device connected.
+        self.timer = None
+        self.CLIENTID = None
         self.TOPIC_SUB = b"#"
-        self.UPDATE_INTERVAL_ms = 20000 # in ms time unit
         self.last_update = time.ticks_ms()
-        self.sw.irq(trigger=machine.Pin.IRQ_FALLING, handler=self.handle_callback)
         self.led.off()
+        self.global_props = None
+        self.i = 1
 
-    def init(self):
+    def init(self, global_props: GlobalProperties):
+        self.global_props = global_props
+        self.CLIENTID = self.global_props.get_thing_id()
+        # Activate timer callback if possible
+        timer_no = self.global_props.get_and_use_next_timer_no()
+        print("AwsMqttTest using timer: " + str(timer_no))
+        if (timer_no is not None):
+            self.timer = machine.Timer(timer_no)
+            # We poll for new MQTT msgs every 500 ms
+            self.timer.init(period=500, mode=machine.Timer.PERIODIC, callback=self.timer_callback)
         # Connect to MQTT broker.
         self.mqtt = MqttConnection()
         self.mqtt.connect_to_aws_mqtt( client_id=self.CLIENTID, sub_callback=self.handle_mqtt_sub )
         self.mqtt.subscribe(self.TOPIC_SUB)
-        # We poll for new MQTT msgs every 500 ms
-        self.tim0.init(period=500, mode=machine.Timer.PERIODIC, callback=self.timer_callback)
+        global_props.set_mqtt_connection(self.mqtt)
 
     # **************************************
-    # Main loop:
+    # Process function, should be called from the main loop
     def process(self):
-        while True: 
-            if time.ticks_ms() - self.last_update >= self.UPDATE_INTERVAL_ms:
-                # print('Timeout occured...')
-                self.last_update = time.ticks_ms()
-                obj = {
-                    "time": self.last_update,
-                    "content": "Howdey :-)"
-                }
-                json_str = json.dumps(obj)
-                self.mqtt.send_mqtt_msg(msg_to_send=json_str, topic='/txt/write')
-
-    def handle_callback(self, pin):
-        # Ensure we are called directly
-        self.last_update = time.ticks_ms() - self.UPDATE_INTERVAL_ms + 200
+        self.i = 0  # Do nothing
 
     def handle_mqtt_msg(self, topic, msg):
         if (topic == "/btn/set"):

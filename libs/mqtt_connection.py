@@ -1,5 +1,6 @@
 from umqtt.simple import MQTTClient
 from config import aws_iot_settings
+import ujson as json
 
 # This class connects to an AWS IoT MQTT broker & sends messages to this
 class MqttConnection:
@@ -63,6 +64,12 @@ class MqttConnection:
     def send_mqtt_msg(self, msg_to_send: str, topic: str):
         # print('Sending msg to MQTT: ' + msg_to_send)
         self.mqtt.publish( topic = topic, msg = msg_to_send, qos = 0 )
+
+    # This function is used to send an object as a JSON string to a topic
+    def send_mqtt_obj(self, obj_to_send, topic: str):
+        # print('Sending msg to MQTT: ' + msg_to_send)
+        json_str = json.dumps(obj_to_send)
+        self.mqtt.publish( topic = topic, msg = json_str, qos = 0 )
 
     # This function is used to subscribe to data from the given topic name
     # when data is received the sub_callback given in connect will be called

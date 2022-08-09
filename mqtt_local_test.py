@@ -4,8 +4,9 @@ import ujson as json
 from libs.mqtt_connection import MqttConnection
 from libs.wifi_connection import WifiConnection
 from config import mqtt_settings
+from libs.global_props import GlobalProperties
 
-# This is a test class which sends a message to the AWS IoT topic '/txt/write' whenever you press the BOOT button.
+# This is a MQTT Connection class which creates an MQTT connection to a normal Basic auth MQTT broker
 # It also listens to 2 topics
 # - '/txt/write' -> the string in field content is written to the console
 # - '/btn/set' -> the blue led is turned on/off based on the value in the field "state" (can be "on" or "off")
@@ -15,21 +16,14 @@ class NormalMqttTest:
         self.mqtt_username=mqtt_settings.username
         self.mqtt_password=mqtt_settings.password
         self.led = machine.Pin(2, machine.Pin.OUT)
-        self.sw = machine.Pin(0, machine.Pin.IN)
-        # self.tim0 = machine.Timer(0)
         self.HTTP_HEADERS = {'Content-Type': 'application/json'}
         self.UPDATE_INTERVAL_ms = 30000 # in ms time unit
         self.last_update = time.ticks_ms()
-        self.sw.irq(trigger=machine.Pin.IRQ_FALLING, handler=self.handle_callback)
         self.led.off()
-        self.CLIENT_ID = b'ESP32_1'  # Should be unique for each device connected.
+        self.CLIENT_ID = None
         self.MQTT_ENDPOINT = mqtt_settings.mqtt_host
         self.TOPIC_SUB = b"#"
-
-    def handle_callback(self, pin):
-        # Ensure we are called directly
-        self.last_update = time.ticks_ms() - self.UPDATE_INTERVAL_ms + 200
-        # print('Button pressed')
+        self.global_props = None
 
     def handle_mqtt_msg(self, topic, msg):
         if (topic == "/btn/set"):
@@ -48,25 +42,19 @@ class NormalMqttTest:
         print("msg received @ '" + topic_str + "': " + msg_str)
         self.handle_mqtt_msg(topic_str, msg_str)
 
-    def init(self):
+    def init(self, global_props: GlobalProperties):
+        self.global_props = global_props
+        self.CLIENT_ID = self.global_props.get_thing_id()
         # Connect to MQTT broker.
         self.mqtt = MqttConnection()
         self.mqtt.connect_to_mqtt( host_endpoint=self.MQTT_ENDPOINT, client_id=self.CLIENT_ID,
                                    username=self.mqtt_username, password=self.mqtt_password, sub_callback=self.sub_callback )
         self.mqtt.subscribe(self.TOPIC_SUB)
+        global_props.set_mqtt_connection(self.mqtt)
 
     # **************************************
-    # Main loop:
+    # Process function, should be called from the main loop
     def process(self):
-        while True: 
-            if time.ticks_ms() - self.last_update >= self.UPDATE_INTERVAL_ms:
-                print('Requesting data...')
-                self.last_update = time.ticks_ms()
-                obj = {
-                    "time": self.last_update,
-                    "msg": "Howdey :-)"
-                }
-                json_str = json.dumps(obj)
-                self.mqtt.send_mqtt_msg(json_str, 'test/esp32/hi')
-                #self.mqtt.wait_msg() #blocking  
-                self.mqtt.check_msg() #non-blocking  
+        if time.ticks_ms() - self.last_update >= self.UPDATE_INTERVAL_ms:
+            #self.mqtt.wait_msg() #blocking  
+            self.mqtt.check_msg() #non-blocking  

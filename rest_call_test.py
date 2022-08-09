@@ -1,6 +1,7 @@
 import machine
 import time
 import urequests 
+from libs.global_props import GlobalProperties
 
 # This is a test class which requests all users from the test REST site 'https://jsonplaceholder.typicode.com/users'
 # whenever you press the BOOT button.
@@ -23,30 +24,29 @@ class RestCaller:
         self.request_data=True
         # print('value set to: ' + str(led.value()))
 
-    def init(self):
+    def init(self, global_props: GlobalProperties):
         # No init is required, function is only here to behave as other modules
         print('Initialized Ok')
         
     # **************************************
-    # Main loop:
+    # Process function, should be called from the main loop
     def process(self):
-        while True: 
-            if self.request_data:
-                print('Requesting data...')
-                self.led.on()  # LED on while fetching data
-                response = urequests.get( 
-                  'https://jsonplaceholder.typicode.com/users', 
-                  headers = self.HTTP_HEADERS )
-                # check status code of the request
-                if response.status_code == 200:
-                    # get the json format of data
-                    data = response.json()
-                
-                    for item in data:
-                        print('Name: ' + item['name'])
-                else:
-                    # show error message
-                    print_text('Error in HTTP request.', 3, 20, 1)
-                    print('Error in HTTP request.')
-                self.request_data=False
-                self.led.off()  # data fetched -> LED off
+        if self.request_data:
+            print('Requesting data...')
+            self.led.on()  # LED on while fetching data
+            response = urequests.get( 
+              'https://jsonplaceholder.typicode.com/users', 
+              headers = self.HTTP_HEADERS )
+            # check status code of the request
+            if response.status_code == 200:
+                # get the json format of data
+                data = response.json()
+            
+                for item in data:
+                    print('Name: ' + item['name'])
+            else:
+                # show error message
+                print_text('Error in HTTP request.', 3, 20, 1)
+                print('Error in HTTP request.')
+            self.request_data=False
+            self.led.off()  # data fetched -> LED off
