@@ -2,18 +2,20 @@ import machine
 import time
 from libs.global_props import GlobalProperties
 from config import tasks_settings
+from libs.task_base import Task
+import gc
 
 # This is a test class which sends a message to the AWS IoT topic '/heartbeat' Onece every X milliseconds
-class HeartbeatSender:
+class HeartbeatTask(Task):
     def __init__(self):
+        super().__init__()
         self.timer = None
         self.UPDATE_INTERVAL_ms = tasks_settings.heartbeat_timeout_ms # in ms time unit
         self.last_update = time.ticks_ms()
-        self.global_props = None
         self.mqtt = None
 
     def init(self, global_props: GlobalProperties):
-        self.global_props = global_props
+        super().init(global_props)
         # Activate timer callback if possible
         timer_no = self.global_props.get_and_use_next_timer_no()
         print("HeartbeatSender using timer: " + str(timer_no))
@@ -37,10 +39,13 @@ class HeartbeatSender:
     # The timer callback where we poll for any new MQTT msgs
     def timer_callback(self, pin):
         # print('Timeout occured...')
+        gc.collect()
+        free_mem = gc.mem_free()        
         self.last_update = time.ticks_ms()
         obj = {
             "time": self.last_update,
-            "content": "Heatbeat"
+            "content": "heartbeat",
+            "freeMem": free_mem
         }
         self.mqtt.send_mqtt_obj(obj_to_send=obj, topic='/heartbeat/')
 

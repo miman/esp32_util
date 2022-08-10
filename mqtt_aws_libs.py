@@ -4,24 +4,23 @@ import ujson as json
 from libs.mqtt_connection import MqttConnection
 from libs.wifi_connection import WifiConnection
 from libs.global_props import GlobalProperties
+from libs.task_base import Task
+from config import tasks_settings
 
 # This is a MQTT class which creates an MQTT connection to an AWS IoT MQTT broker
 # It also listens to 2 topics
 # - '/txt/write' -> the string in field content is written to the console
 # - '/btn/set' -> the blue led is turned on/off based on the value in the field "state" (can be "on" or "off")
-class AwsMqttTest:
+class AwsMqttTest(Task):
     def __init__(self):
-        self.led = machine.Pin(2, machine.Pin.OUT)
+        super().__init__()
         self.timer = None
         self.CLIENTID = None
         self.TOPIC_SUB = b"#"
         self.last_update = time.ticks_ms()
-        self.led.off()
-        self.global_props = None
-        self.i = 1
 
     def init(self, global_props: GlobalProperties):
-        self.global_props = global_props
+        super().init(global_props)
         self.CLIENTID = self.global_props.get_thing_id()
         # Activate timer callback if possible
         timer_no = self.global_props.get_and_use_next_timer_no()
@@ -39,16 +38,26 @@ class AwsMqttTest:
     # **************************************
     # Process function, should be called from the main loop
     def process(self):
-        self.i = 0  # Do nothing
+        pass  # Do nothing
 
     def handle_mqtt_msg(self, topic, msg):
-        if (topic == "/btn/set"):
-            obj = json.loads(msg)
-            if (obj["state"] == "on"):
-                self.led.on()
-            else:
-                self.led.off()
-        elif (topic == "/txt/write"):
+        print("> MQTT msg on [" + topic + "]: " + msg)
+        items = topic.split("/")
+        if (items[0] != tasks_settings.thing_id):
+            # The message was not for this device
+            print("> MQTT received msg for other device on [" + topic + "]: " + msg)
+            return
+        
+        del items[0]  # Remove thing address
+        local_topic = '/'.join(items)
+        if ("led/set" in local_topic):
+            obj=json.loads(msg)  # str -> object
+            items = local_topic.split("/")
+            dev_id = items[len(items)-1]
+            del items[len(items)-1]  # Remove device id from topic
+            local_topic = '/'.join(items)
+            self.event_bus.post(msg=obj, topic=local_topic, device_id=dev_id)
+        elif (local_topic == "txt/write"):
             obj = json.loads(msg)
             print("msg content: " + obj["content"])
 

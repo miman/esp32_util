@@ -5,14 +5,16 @@ from libs.mqtt_connection import MqttConnection
 from libs.wifi_connection import WifiConnection
 from config import mqtt_settings
 from libs.global_props import GlobalProperties
+from libs.task_base import Task
 
 # This is a MQTT Connection class which creates an MQTT connection to a normal Basic auth MQTT broker
 # It also listens to 2 topics
 # - '/txt/write' -> the string in field content is written to the console
 # - '/btn/set' -> the blue led is turned on/off based on the value in the field "state" (can be "on" or "off")
 
-class NormalMqttTest:
+class NormalMqttTest(Task):
     def __init__(self):
+        super().__init__()
         self.mqtt_username=mqtt_settings.username
         self.mqtt_password=mqtt_settings.password
         self.led = machine.Pin(2, machine.Pin.OUT)
@@ -23,7 +25,6 @@ class NormalMqttTest:
         self.CLIENT_ID = None
         self.MQTT_ENDPOINT = mqtt_settings.mqtt_host
         self.TOPIC_SUB = b"#"
-        self.global_props = None
 
     def handle_mqtt_msg(self, topic, msg):
         if (topic == "/btn/set"):
@@ -43,7 +44,7 @@ class NormalMqttTest:
         self.handle_mqtt_msg(topic_str, msg_str)
 
     def init(self, global_props: GlobalProperties):
-        self.global_props = global_props
+        super().init(global_props)
         self.CLIENT_ID = self.global_props.get_thing_id()
         # Connect to MQTT broker.
         self.mqtt = MqttConnection()

@@ -10,9 +10,13 @@ from mqtt_aws_libs import AwsMqttTest
 from mqtt_local_test import NormalMqttTest
 from gpio_tester import GpioTest
 from rfid_test import RfidTest
-from heartbeat_sender import HeartbeatSender
+from tasks.heartbeat_task import HeartbeatTask
+from libs.event_bus import EventBus
+from tasks.led_task import LedTask
+from tasks.btn_task import ButtonTask
 from config import tasks_settings
 from libs.global_props import GlobalProperties
+from flow import Flow
 
 # Creates & returns the correct Task object based on task name
 def createTaskFromString(task_name):
@@ -24,16 +28,24 @@ def createTaskFromString(task_name):
         return NormalMqttTest()
     elif (task_name == "GpioTest"):
         return GpioTest()
-    elif (task_name == "HeartbeatSender"):
-        return HeartbeatSender()
+    elif (task_name == "HeartbeatTask"):
+        return HeartbeatTask()
     elif (task_name == "RfidTest"):
         return RfidTest()
+    elif (task_name == "EventBus"):
+        return EventBus()
+    elif (task_name == "LedTask"):
+        return LedTask()
+    elif (task_name == "ButtonTask"):
+        return ButtonTask()
     else:
         print("Unknown Task name '" + at + "'-> no object created")
 
 try:
     global_props = GlobalProperties();
     global_props.set_thing_id(tasks_settings.thing_id)
+    
+    flow: Flow = Flow(global_props)
     
     # **************************************
     # Connect to Internet over Wifi
@@ -53,13 +65,9 @@ try:
             print("Task unknown: " + at)
         
     for task in tasks:
+        #print ("Initiating: " + type(task).__name__)
         task.init(global_props)
-    #runner = RestCaller()
-    #runner = AwsMqttTest()
-    #runner = NormalMqttTest()
-    #runner = GpioTest()
-    #runner = RfidTest()
-    #runner.init()
+        
     while True: 
         for task in tasks:
             task.process()

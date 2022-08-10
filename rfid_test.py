@@ -1,6 +1,9 @@
 from libs.mfrc522 import MFRC522
 from machine import SPI
 from libs.global_props import GlobalProperties
+from libs.task_base import Task
+from libs.event_bus import EventBus
+from config.rfid_config import rfid_readers
 
 # This is a test class which uses an RFID-RC522 reader connected as follows:
 # When an RFID card is read it's number is written to the console
@@ -13,28 +16,30 @@ from libs.global_props import GlobalProperties
 #     cs=5     # green, DS
 # So from left to right connect:
 # GPIO05, GPIO18, GPIO23, GPIO19, Nothing, GND, GPIO04, 3.3V
-class RfidTest:
+class RfidTest(Task):
     def __init__(self):
-        self.spi = SPI(2, baudrate=2500000, polarity=0, phase=0)
-        # *************************
-        # To use SoftSPI,
-        # from machine import SOftSPI
-        # spi = SoftSPI(baudrate=100000, polarity=0, phase=0, sck=sck, mosi=mosi, miso=miso)
-        self.spi.init()
-        self.rdr = MFRC522(spi=self.spi, gpioRst=4, gpioCs=5)
-        self.mqtt = None
+        super().__init__()
+        for config in rfid_readers:
+            print("Adding RFID unit: " + config["id"])
+            self.spi = SPI(config["spi_port"], baudrate=2500000, polarity=0, phase=0)
+            # *************************
+            # To use SoftSPI,
+            # from machine import SOftSPI
+            # spi = SoftSPI(baudrate=100000, polarity=0, phase=0, sck=sck, mosi=mosi, miso=miso)
+            self.spi.init()
+            self.rdr = MFRC522(spi=self.spi, gpioRst=config["gpio_rst"], gpioCs=config["gpio_cs"])
+            self.id = config["id"]
 
     def init(self, global_props: GlobalProperties):
-        self.global_props = global_props
-        self.mqtt = self.global_props.get_mqtt_connection()
+        super().init(global_props)
         print("Place card")
 
     def inform_about_read_tag(self, rfid_no: str):
-        if (self.mqtt is not None):
+        if (self.event_bus is not None):
             obj = {
                 "rfid_no": rfid_no
             }
-            self.mqtt.send_mqtt_obj(obj_to_send=obj, topic="rfid/1")
+            self.event_bus.post(msg=obj, topic="/local/rfid", device_id=self.id)
 
     # **************************************
     # Process function, should be called from the main loop

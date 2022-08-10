@@ -2,13 +2,15 @@ import machine
 import time
 import urequests 
 from libs.global_props import GlobalProperties
+from libs.task_base import Task
 
 # This is a test class which requests all users from the test REST site 'https://jsonplaceholder.typicode.com/users'
 # whenever you press the BOOT button.
 # The resulting list is written to the console
 # Code example from: https://techtotinker.blogspot.com/2020/11/019-esp32-micropython-openweather.html
-class RestCaller:
+class RestCaller(Task):
     def __init__(self):
+        super().__init__()
         self.led = machine.Pin(2, machine.Pin.OUT)
         self.sw = machine.Pin(0, machine.Pin.IN)
         # tim0 = machine.Timer(0)
@@ -25,8 +27,7 @@ class RestCaller:
         # print('value set to: ' + str(led.value()))
 
     def init(self, global_props: GlobalProperties):
-        # No init is required, function is only here to behave as other modules
-        print('Initialized Ok')
+        super().init(global_props)
         
     # **************************************
     # Process function, should be called from the main loop
