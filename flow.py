@@ -4,7 +4,10 @@ from libs.global_props import GlobalProperties
 from config import tasks_settings
 import ujson as json
 
-# This class connects to an AWS IoT MQTT broker & sends messages to this
+# This class implements the actual logic flow based on receiving & sending events on the event bus
+# For now it does the following:
+# - Send all received RFID events to an external MQTT server
+# - Listens to button changes and turn 2 different LED's oon/off based on button state
 class Flow:
     def __init__(self, global_props: GlobalProperties):
         self.global_props = global_props
