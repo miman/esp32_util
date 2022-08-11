@@ -4,7 +4,6 @@ import ujson as json
 from libs.global_props import GlobalProperties
 from libs.task_base import Task
 from libs.event_bus import EventBus
-from config.btn_config import buttons
 
 class ButtonTask(Task):
     def __init__(self):
@@ -13,7 +12,7 @@ class ButtonTask(Task):
 
     def init(self, global_props: GlobalProperties):
         super().init(global_props)
-        for config in buttons:
+        for config in self.global_props.config["button"]["buttons"]:
             print("Adding Button unit: " + config["id"])
             b = machine.Pin(config["pin"], machine.Pin.IN)
             self.btns[config["pin"]] = {
@@ -33,4 +32,4 @@ class ButtonTask(Task):
                 msg = {
                     "state": "on" if (obj["last_state"] == 0) else "off"
                     }
-                self.event_bus.post(msg=msg, topic="/local/btn/state", device_id=obj["id"])
+                self.event_bus.post(msg=msg, topic="btn/state", device_id=obj["id"])

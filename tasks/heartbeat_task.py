@@ -1,7 +1,6 @@
 import machine
 import time
 from libs.global_props import GlobalProperties
-from config import tasks_settings
 from libs.task_base import Task
 import gc
 
@@ -10,7 +9,7 @@ class HeartbeatTask(Task):
     def __init__(self):
         super().__init__()
         self.timer = None
-        self.UPDATE_INTERVAL_ms = tasks_settings.heartbeat_timeout_ms # in ms time unit
+        self.UPDATE_INTERVAL_ms = None # in ms time unit
         self.last_update = time.ticks_ms()
         self.mqtt = None
 
@@ -18,6 +17,7 @@ class HeartbeatTask(Task):
         super().init(global_props)
         # Activate timer callback if possible
         timer_no = self.global_props.get_and_use_next_timer_no()
+        self.UPDATE_INTERVAL_ms = self.global_props.config["heartbeat"]["heartbeat_timeout_ms"]
         print("HeartbeatSender using timer: " + str(timer_no))
         if (timer_no is not None):
             self.timer = machine.Timer(timer_no)

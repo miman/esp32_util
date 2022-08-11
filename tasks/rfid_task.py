@@ -3,7 +3,6 @@ from machine import SPI
 from libs.global_props import GlobalProperties
 from libs.task_base import Task
 from libs.event_bus import EventBus
-from config.rfid_config import rfid_readers
 
 # This is a test class which uses an RFID-RC522 reader connected as follows:
 # When an RFID card is read it's number is written to the console
@@ -16,10 +15,15 @@ from config.rfid_config import rfid_readers
 #     cs=5     # green, DS
 # So from left to right connect:
 # GPIO05, GPIO18, GPIO23, GPIO19, Nothing, GND, GPIO04, 3.3V
-class RfidTest(Task):
+class RfidTask(Task):
     def __init__(self):
         super().__init__()
-        for config in rfid_readers:
+        self.event_bus = None
+
+    def init(self, global_props: GlobalProperties):
+        super().init(global_props)
+        self.event_bus = global_props.get_event_bus()
+        for config in self.global_props.config["rfid_reader"]["rfid_readers"]:
             print("Adding RFID unit: " + config["id"])
             self.spi = SPI(config["spi_port"], baudrate=2500000, polarity=0, phase=0)
             # *************************
@@ -29,9 +33,6 @@ class RfidTest(Task):
             self.spi.init()
             self.rdr = MFRC522(spi=self.spi, gpioRst=config["gpio_rst"], gpioCs=config["gpio_cs"])
             self.id = config["id"]
-
-    def init(self, global_props: GlobalProperties):
-        super().init(global_props)
         print("Place card")
 
     def inform_about_read_tag(self, rfid_no: str):
@@ -39,7 +40,7 @@ class RfidTest(Task):
             obj = {
                 "rfid_no": rfid_no
             }
-            self.event_bus.post(msg=obj, topic="/local/rfid", device_id=self.id)
+            self.event_bus.post(msg=obj, topic="rfid", device_id=self.id)
 
     # **************************************
     # Process function, should be called from the main loop

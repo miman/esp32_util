@@ -1,6 +1,6 @@
 from umqtt.simple import MQTTClient
-from config import aws_iot_settings
 from libs.event_bus import EventBus
+from config.config import config
 
 # This class connects to an AWS IoT MQTT broker & sends messages to this
 class GlobalProperties:
@@ -9,6 +9,7 @@ class GlobalProperties:
         self.next_timer_no: int = -1
         self.thing_id: str = None
         self.event_bus = EventBus()
+        self.config = config
 
     # Returns the thing_id global property
     def get_event_bus(self) -> EventBus:

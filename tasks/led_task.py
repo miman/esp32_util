@@ -4,7 +4,6 @@ import ujson as json
 from libs.global_props import GlobalProperties
 from libs.task_base import Task
 from libs.event_bus import EventBus
-from config.led_config import leds
 
 class LedTask(Task):
     def __init__(self):
@@ -20,7 +19,7 @@ class LedTask(Task):
         super().init(global_props)
         self.event_bus = self.global_props.get_event_bus()
         self.enable_observations()
-        for config in leds:
+        for config in self.global_props.config["led"]["leds"]:
             print("Adding LED unit: " + config["id"])
             led = machine.Pin(config["pin"], machine.Pin.OUT)
             led.off()

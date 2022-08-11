@@ -1,5 +1,4 @@
 import network 
-from config import wifi_credentials 
 
 # This class activates a Wifi connection based on the ssid & password defined
 # in a separate file called wifi_credentials.py
@@ -9,11 +8,11 @@ class WifiConnection:
 
     # **************************************
     # Configure the ESP32 wifi as STAtion
-    def connect(self):
+    def connect(self, config):
         if not self.sta.isconnected(): 
           print('connecting to network...') 
           self.sta.active(True) 
-          self.sta.connect(wifi_credentials.ssid, wifi_credentials.password) 
+          self.sta.connect(config["wifi"]["ssid"], config["wifi"]["password"]) 
           while not self.sta.isconnected(): 
             pass 
         print('network config:', self.sta.ifconfig())

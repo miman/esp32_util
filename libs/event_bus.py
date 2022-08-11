@@ -25,8 +25,8 @@ class EventBus:
     # Posting a message on the eventbus
     # This will send this event to all observers that are subscribing to this topic
     def post(self, msg, topic: str, device_id: str):
-        for key in self.observers.keys():
-            obs = self.observers[key]
+        if (topic in self.observers):
+            obs = self.observers[topic]
             for cb in obs.get_callbacks():
                 cb(msg=msg, topic=topic, device_id=device_id)
 

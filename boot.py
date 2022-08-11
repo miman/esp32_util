@@ -6,66 +6,49 @@
 
 from libs.wifi_connection import WifiConnection
 from rest_call_test import RestCaller
-from mqtt_aws_libs import AwsMqttTest
-from mqtt_local_test import NormalMqttTest
-from gpio_tester import GpioTest
-from rfid_test import RfidTest
+from tasks.mqtt_task import MqttTask
+from tasks.rfid_task import RfidTask
 from tasks.heartbeat_task import HeartbeatTask
 from libs.event_bus import EventBus
 from tasks.led_task import LedTask
 from tasks.btn_task import ButtonTask
-from config import tasks_settings
 from libs.global_props import GlobalProperties
 from flow import Flow
 
 # Creates & returns the correct Task object based on task name
-def createTaskFromString(task_name):
-    if (task_name == "RestCaller"):
-        return RestCaller()
-    elif (task_name == "AwsMqttTest"):
-        return AwsMqttTest()
-    elif (task_name == "NormalMqttTest"):
-        return NormalMqttTest()
-    elif (task_name == "GpioTest"):
-        return GpioTest()
-    elif (task_name == "HeartbeatTask"):
-        return HeartbeatTask()
-    elif (task_name == "RfidTest"):
-        return RfidTest()
-    elif (task_name == "EventBus"):
-        return EventBus()
-    elif (task_name == "LedTask"):
-        return LedTask()
-    elif (task_name == "ButtonTask"):
-        return ButtonTask()
-    else:
-        print("Unknown Task name '" + at + "'-> no object created")
+def startActiveTasks(config, tasks):
+    if (config["mqtt"]["active"]):
+        tasks.append( MqttTask() )
+    if (config["rest_caller"]["active"]):
+        tasks.append( RestCaller() )
+    if (config["heartbeat"]["active"]):
+        tasks.append( HeartbeatTask() )
+    if (config["rfid_reader"]["active"]):
+        tasks.append( RfidTask() )
+    if (config["led"]["active"]):
+        tasks.append( LedTask() )
+    if (config["button"]["active"]):
+        tasks.append( ButtonTask() )
 
 try:
     global_props = GlobalProperties();
-    global_props.set_thing_id(tasks_settings.thing_id)
+    global_props.set_thing_id(global_props.config["thing_id"])
     
     flow: Flow = Flow(global_props)
     
     # **************************************
     # Connect to Internet over Wifi
-    if (tasks_settings.activate_wifi):
+    if (global_props.config["wifi"]["active"]):
         wifi = WifiConnection()
-        wifi.connect()
+        wifi.connect(global_props.config)
     else:
         print("Wifi set not be activated in config/tasks_settings.py")
         
     tasks = []
-    for at in tasks_settings.active_tasks:
-        tmp = createTaskFromString(at)
-        if tmp is not None:
-            tasks.append(tmp)
-            print("Task created: " + at)
-        else:
-            print("Task unknown: " + at)
-        
+    startActiveTasks(global_props.config, tasks)
+    
     for task in tasks:
-        #print ("Initiating: " + type(task).__name__)
+        print ("Initiating: " + type(task).__name__)
         task.init(global_props)
         
     while True: 
