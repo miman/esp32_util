@@ -46,23 +46,41 @@ The config file contains the entire configuration for the application
 ![UML Page flow](https://www.plantuml.com/plantuml/png/ROx1IiGm48RlUOfXZqBs4MHT4JqeY0YUf-sqXaqdCPdeGNntwM5eq-pr-uRvlrCMJ59cR_emny340ey-TEXVKuYKn57Ug8TlOZcNR0OKx30Jz857DsrENhv4xWCpzU82xyJTJxxgFjpeDiBi4-369ZTzYjKz3O6Zfr6EjyhhTR2sCZhVIDrlZOdONt0YEBnZlkG3_1g0DVoPXeLNx5n40ZVuYJ19HoYDUHjT-sNfNI0O0pe3jiGr3NIfDVgouVfrpwkuMlwP4_5GPlyF)
 
 [PlantUML edit page for picture above](http://www.plantuml.com/plantuml/uml/ROx1IiGm48RlUOfXZqBs4MHT4JqeY0YUf-sqXaqdCPdeGNntwM5eq-pr-uRvlrCMJ59cR_emny340ey-TEXVKuYKn57Ug8TlOZcNR0OKx30Jz857DsrENhv4xWCpzU82xyJTJxxgFjpeDiBi4-369ZTzYjKz3O6Zfr6EjyhhTR2sCZhVIDrlZOdONt0YEBnZlkG3_1g0DVoPXeLNx5n40ZVuYJ19HoYDUHjT-sNfNI0O0pe3jiGr3NIfDVgouVfrpwkuMlwP4_5GPlyF)
+
 # Configuration
+All configuration for the application is in the ***config/config.py*** file.
 
 ## Active Tasks
-Which Task modules that shall be activated is configured in teh  ***config/tasks_settings.py***
-In this file we also configure the name of the thing and some common settings
+Which Task modules that shall be activated is read from the active flags for each component
 
 ## Buttons
-Which buttons that shall be activated & what PIN each is connected to is configured in the ***config/btn_config.py***
+Which buttons that shall be activated & what PIN each is connected to is configured in the ***button*** block
 
 ## LED
-Which LED's that shall be activated & what PIN each is connected to is configured in the ***config/led_config.py***
+Which LED's that shall be activated & what PIN each is connected to is configured in the ***led*** block
 
 ## RFID
-Which RFID reader that shall be activated & which PINs it is connected to is configured in the ***config/rfid_config.py***, for now only one is supported
+Which RFID reader that shall be activated & which PINs it is connected to is configured in the ***rfid*** block, for now only one is supported
+
+## Wifi
+The username/password for connecting to Wifi configured in the ***wifi*** block
+
+## MQTT / AWS IoT
+The MQTT configuration is  configured in the ***mqtt*** block.
+Here you can configure:
+* if you are to connect to a normal MQTT server with username/password or AWS IoT using certificates
+* The hostname and username/password for a normal MQTT briker
+* The AWS host & regiond & the file paths for the AWS certificates
+* which topics on the internal event bus that should automatically be routed to an external MQTT broker
+* which topics that the device should subscribe to from the external MQTT broker, these will automaically be sent to the eventbus (after the thing name has been removed)
+
+## Heartbeat
+How often a heartbeat should be sent to the external MQT broker configured in the ***heartbeat*** block
 
 # Flow
 The mindset is that all interaction logic between the modules is done the the flows.py component
 
-# Micropython library aggregation site
+# Misc
+
+## Micropython library aggregation site
 https://awesome-micropython.com/
