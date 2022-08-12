@@ -10,9 +10,9 @@ The mindset is to have a number of Task modules integrating with different hardw
 ## Interaction overview
 Here is an overview of how the classes & config files refer to each other:
 
-![UML Page flow](https://www.plantuml.com/plantuml/png/TPBDRi8m48JlVWehnqgv8FKQyQFILYfI2v4ucsH3BHnlQc_8eUBTQqX3bvXUa7PcFH-pojIJSjJMHXHODsZ1afmZ4XkN1ZisFXlSAVFki0576ZopdexXTzvw8SuHCitwj_tGDc6E7ey5-P0Qg2XbMOqg3ceFCicLF_X4VWif_vXlK9xr6stU4g6Dv1S8LNUWA7BMbOvJLbzqsPGYo7s7D1juN68ufd8QDpXiq1ZhD2ui2Ufct7eDdXRA670yXQaXfbIaTif3U6OhlHVtRktq_fFIwmOhlrml7YSJSNkE1LeB1Mcq8sFM-RlULbUQ6MBetfV-PLpB1t646NaHwLAz_sAo25OORClHuPBPTYDVCK-ayb9rNYE9qp-hguyybnjmHt2NzJhWlJkUzwD_afROsJGR8czRoC4T4gPWoxOsFm00)
+![UML Page flow](https://www.plantuml.com/plantuml/png/TLBDRhCm4BpxAIoEd-HBfE-AygEchTH8ROAKimCBjMAyn5x2eSgxju0i79CSTsOzCpkmT2GjjRLcETOD6Z34ruWKZ5kDNJ2-QZn9_Mcn0KiAN42zNC7GkdMCzH9SfEFRSMWRaSuVnm3_9pIK90AjHkPdMG5FCkdEBk4_ZFF9ymEA7h_3rYqHcXdy1jBI2IJDc7sfvYgx2yqtjqh3hh83_aUCfudKnmWWdo92un2U63D4c8_0Gp2CS8lhuGHr4tUq1qSRgJNOK6T2Uvb2aZn91pn7KwfgcXta5iYnHv_AgkgRX7_oT67I2DhTxZV_5mjst_S6ZO6S59g8M7Nk8NTKfGe8vbiSBlGUlO078vkOYvt6jePVCfsPvHhR8kewMHqF_1spX4l7PUSK4hizMTrzPHa_WBs27TRh2v6prtv_baGKs1cHUidxAxXdlS8IJD7M-XS0)
 
-[PlantUML edit page for picture above](http://www.plantuml.com/plantuml/uml/TPBDRi8m48JlVWehnqgv8FKQyQFILYfI2v4ucsH3BHnlQc_8eUBTQqX3bvXUa7PcFH-pojIJSjJMHXHODsZ1afmZ4XkN1ZisFXlSAVFki0576ZopdexXTzvw8SuHCitwj_tGDc6E7ey5-P0Qg2XbMOqg3ceFCicLF_X4VWif_vXlK9xr6stU4g6Dv1S8LNUWA7BMbOvJLbzqsPGYo7s7D1juN68ufd8QDpXiq1ZhD2ui2Ufct7eDdXRA670yXQaXfbIaTif3U6OhlHVtRktq_fFIwmOhlrml7YSJSNkE1LeB1Mcq8sFM-RlULbUQ6MBetfV-PLpB1t646NaHwLAz_sAo25OORClHuPBPTYDVCK-ayb9rNYE9qp-hguyybnjmHt2NzJhWlJkUzwD_afROsJGR8czRoC4T4gPWoxOsFm00)
+[PlantUML edit page for picture above](http://www.plantuml.com/plantuml/uml/TLBDRhCm4BpxAIoEd-HBfE-AygEchTH8ROAKimCBjMAyn5x2eSgxju0i79CSTsOzCpkmT2GjjRLcETOD6Z34ruWKZ5kDNJ2-QZn9_Mcn0KiAN42zNC7GkdMCzH9SfEFRSMWRaSuVnm3_9pIK90AjHkPdMG5FCkdEBk4_ZFF9ymEA7h_3rYqHcXdy1jBI2IJDc7sfvYgx2yqtjqh3hh83_aUCfudKnmWWdo92un2U63D4c8_0Gp2CS8lhuGHr4tUq1qSRgJNOK6T2Uvb2aZn91pn7KwfgcXta5iYnHv_AgkgRX7_oT67I2DhTxZV_5mjst_S6ZO6S59g8M7Nk8NTKfGe8vbiSBlGUlO078vkOYvt6jePVCfsPvHhR8kewMHqF_1spX4l7PUSK4hizMTrzPHa_WBs27TRh2v6prtv_baGKs1cHUidxAxXdlS8IJD7M-XS0)
 
 ## Tasks
 Here is an overview of the children of the Task class
@@ -25,60 +25,36 @@ The Init function will be called after all active components have been created
 
 The process function will be called in each main loop run
 
-![UML Page flow](https://www.plantuml.com/plantuml/png/POyn3i8m40Hxl-8-a1zGHD1GG1Fn0KCE566VmLvtF1ufpIgvTdQzdXiROaNFAJnA_XHJWznYUmSHWelEZXqxKCpXiyQAkqQuP7ekVkNw1NnJ6qun9QskEvMEnLxhao2hgHn-mq15CYfkC1LTGaN2_RSIP8_OyuiyPLIRUqv_)
+![UML Page flow](https://www.plantuml.com/plantuml/png/POyn3i8m34NtdC8Nw0qOAf0G0rqgBX2egI8I1vAVZSDNwkAeNf-_lzuVAtn1Iz6zSlfcOG4zVFqu8WLtNWmxDo2BmJVs1K_sC9Vv7MpBz0DiaYikFaOk9ZldXY2hURc6oDDQTkveNq2d_p1qwifwTSL6NI-ghl2eGuwEI7EsiP-ek9yniYmjnGq0)
 
-[PlantUML edit page for picture above](http://www.plantuml.com/plantuml/uml/POyn3i8m40Hxl-8-a1zGHD1GG1Fn0KCE566VmLvtF1ufpIgvTdQzdXiROaNFAJnA_XHJWznYUmSHWelEZXqxKCpXiyQAkqQuP7ekVkNw1NnJ6qun9QskEvMEnLxhao2hgHn-mq15CYfkC1LTGaN2_RSIP8_OyuiyPLIRUqv_)
+[PlantUML edit page for picture above](http://www.plantuml.com/plantuml/uml/POyn3i8m34NtdC8Nw0qOAf0G0rqgBX2egI8I1vAVZSDNwkAeNf-_lzuVAtn1Iz6zSlfcOG4zVFqu8WLtNWmxDo2BmJVs1K_sC9Vv7MpBz0DiaYikFaOk9ZldXY2hURc6oDDQTkveNq2d_p1qwifwTSL6NI-ghl2eGuwEI7EsiP-ek9yniYmjnGq0)
 
 ## Event bus
 Here is an overview of who uses the event bus
 
 The eventbus is created by the GlobalProperties & can be used by anyuone with access to this
 
-![UML Page flow](https://www.plantuml.com/plantuml/png/RO_12i8m38RlVOgUXTBx3Z86waL1P2_GhL67MJFRrBs-JgZQpLlv_ZJv_ZAmyHnx55Asr0_amB7S8eqPs24r1e-U1l3SGSZ2pGCSLp67Ux2r2RUCLP6Pt08VximBU3ftjeR0GinlI-MxovNLvsuXQNH1JD9IgVKFNudqVWVJn0I_7hDvZTGQr0qx7TWmPDzJfK8YM1s0HNBylyM_Kf6wBSHAS3Rs-0G0)
+![UML Page flow](https://www.plantuml.com/plantuml/png/POz1JiCm44NtFeNNY2ZxBb1LYRAX4a9Sm6scnSAP2UFlvleaXU0wtetVdx7UtqOuHUg3EKa_21F3xeECnjeCNe8SNNXJ6KZXAHRXyvKOkrJ2L-e-NFmgs2u1mXK-V0CLV3_x-eEz3tIuw8sRjPDjr5y-qVpxRAoC7CrSnZRDqnr_CCjy2-QD6MQ_rVuHt4OuK76tTDpOG5qR2MQHBgzrecOfMPdaJbEMXY8zJrbx4WOnLihvwczjL0zw_9sLUhdcX-lCbhXBVVW1)
 
-[PlantUML edit page for picture above](http://www.plantuml.com/plantuml/uml/RO_12i8m38RlVOgUXTBx3Z86waL1P2_GhL67MJFRrBs-JgZQpLlv_ZJv_ZAmyHnx55Asr0_amB7S8eqPs24r1e-U1l3SGSZ2pGCSLp67Ux2r2RUCLP6Pt08VximBU3ftjeR0GinlI-MxovNLvsuXQNH1JD9IgVKFNudqVWVJn0I_7hDvZTGQr0qx7TWmPDzJfK8YM1s0HNBylyM_Kf6wBSHAS3Rs-0G0)
+[PlantUML edit page for picture above](http://www.plantuml.com/plantuml/uml/POz1JiCm44NtFeNNY2ZxBb1LYRAX4a9Sm6scnSAP2UFlvleaXU0wtetVdx7UtqOuHUg3EKa_21F3xeECnjeCNe8SNNXJ6KZXAHRXyvKOkrJ2L-e-NFmgs2u1mXK-V0CLV3_x-eEz3tIuw8sRjPDjr5y-qVpxRAoC7CrSnZRDqnr_CCjy2-QD6MQ_rVuHt4OuK76tTDpOG5qR2MQHBgzrecOfMPdaJbEMXY8zJrbx4WOnLihvwczjL0zw_9sLUhdcX-lCbhXBVVW1)
 
 ## Configuration file usage
 Here is an overview of how the classes use the config file:
 
 The config file contains the entire configuration for the application
 
-![UML Page flow](https://www.plantuml.com/plantuml/png/ROx1IiGm48RlUOfXZqBs4MHT4JqeY0YUf-sqXaqdCPdeGNntwM5eq-pr-uRvlrCMJ59cR_emny340ey-TEXVKuYKn57Ug8TlOZcNR0OKx30Jz857DsrENhv4xWCpzU82xyJTJxxgFjpeDiBi4-369ZTzYjKz3O6Zfr6EjyhhTR2sCZhVIDrlZOdONt0YEBnZlkG3_1g0DVoPXeLNx5n40ZVuYJ19HoYDUHjT-sNfNI0O0pe3jiGr3NIfDVgouVfrpwkuMlwP4_5GPlyF)
+![UML Page flow](https://www.plantuml.com/plantuml/png/ROxFIiGm48VlUOfXZqBs4MHTyS_11H71ysmxhM7JIKqcUX3VNIg4D5EltpVCxpiamIXvygOBqnoOME31XpFwvnXcYk8ehTJT9x4SSp8z2fun4NI11pUkJauV8hU1cJfnWPMu-Kh_kZStk9KmEW6kR7JZkzYoLq9WxscG_NNXxJfOsvWwhsJTryRCs5rm9DYzOhga7NmRW1h-HFt26tRC8e4t-94mofbGDkPbSDilI-y2eQ7tpjDfZ7_N1ieys3pNPAW5sfGfpSkQvasqbZL6gnzp8Expv7y1)
 
-[PlantUML edit page for picture above](http://www.plantuml.com/plantuml/uml/ROx1IiGm48RlUOfXZqBs4MHT4JqeY0YUf-sqXaqdCPdeGNntwM5eq-pr-uRvlrCMJ59cR_emny340ey-TEXVKuYKn57Ug8TlOZcNR0OKx30Jz857DsrENhv4xWCpzU82xyJTJxxgFjpeDiBi4-369ZTzYjKz3O6Zfr6EjyhhTR2sCZhVIDrlZOdONt0YEBnZlkG3_1g0DVoPXeLNx5n40ZVuYJ19HoYDUHjT-sNfNI0O0pe3jiGr3NIfDVgouVfrpwkuMlwP4_5GPlyF)
+[PlantUML edit page for picture above](http://www.plantuml.com/plantuml/uml/ROxFIiGm48VlUOfXZqBs4MHTyS_11H71ysmxhM7JIKqcUX3VNIg4D5EltpVCxpiamIXvygOBqnoOME31XpFwvnXcYk8ehTJT9x4SSp8z2fun4NI11pUkJauV8hU1cJfnWPMu-Kh_kZStk9KmEW6kR7JZkzYoLq9WxscG_NNXxJfOsvWwhsJTryRCs5rm9DYzOhga7NmRW1h-HFt26tRC8e4t-94mofbGDkPbSDilI-y2eQ7tpjDfZ7_N1ieys3pNPAW5sfGfpSkQvasqbZL6gnzp8Expv7y1)
+
+# Components
+Information of the purpose with each component can be found in this page:
+[Components](docs/components.md)
 
 # Configuration
-All configuration for the application is in the ***config/config.py*** file.
+Information of the content & purpose for the config files can be found in this page:
+[Components](docs/configuration.md)
 
-## Active Tasks
-Which Task modules that shall be activated is read from the active flags for each component
-
-## Buttons
-Which buttons that shall be activated & what PIN each is connected to is configured in the ***button*** block
-
-## LED
-Which LED's that shall be activated & what PIN each is connected to is configured in the ***led*** block
-
-## RFID
-Which RFID reader that shall be activated & which PINs it is connected to is configured in the ***rfid*** block, for now only one is supported
-
-## Wifi
-The username/password for connecting to Wifi configured in the ***wifi*** block
-
-## MQTT / AWS IoT
-The MQTT configuration is  configured in the ***mqtt*** block.
-Here you can configure:
-* if you are to connect to a normal MQTT server with username/password or AWS IoT using certificates
-* The hostname and username/password for a normal MQTT briker
-* The AWS host & regiond & the file paths for the AWS certificates
-* which topics on the internal event bus that should automatically be routed to an external MQTT broker
-* which topics that the device should subscribe to from the external MQTT broker, these will automaically be sent to the eventbus (after the thing name has been removed)
-
-## Heartbeat
-How often a heartbeat should be sent to the external MQT broker configured in the ***heartbeat*** block
-
-# Flow
-The mindset is that all interaction logic between the modules is done the the flows.py component
 
 # Misc
 
