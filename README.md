@@ -5,6 +5,15 @@ This project contains a framework for programming with an eventbus concept in an
 
 The mindset is to have a number of Task modules integrating with different hardware & sending and/or receiving events on the event bus and then place all logic into the ***Flows*** component.
 
+Supported Hardware:
+* LED
+* Buttons
+* RFID reader
+
+Supported communication;
+* Normal MQTT broker
+* AWS IoT MQTT broker
+
 # Overview
 
 ## Interaction overview
