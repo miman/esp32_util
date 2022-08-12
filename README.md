@@ -5,6 +5,8 @@ This project contains a framework for programming with an eventbus concept in an
 
 The mindset is to have a number of Task modules integrating with different hardware & sending and/or receiving events on the event bus and then place all logic into the ***Flows*** component.
 
+The FileTask also enables remote software upload with the option for reboot (for example when adding new logic in the flows file)
+
 Supported Hardware:
 * LED
 * Buttons

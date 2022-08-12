@@ -106,6 +106,8 @@ This task will do a number of file operation tasks on the ESP 32
 
 ### file/write
 Write the given file content to the given file path msgs posted to the topic ***file/write***
+If the reboot flag is present & set to true the device will be rebooted after the file has been written.
+This could for example be used foe remote software updates.
 
 ### Payload format
 The payload for ***file/write*** is:
@@ -113,7 +115,8 @@ The payload for ***file/write*** is:
 ```
 {
     "path": "dir/filename.py",
-    "content": "File content"
+    "content": "File content",
+    "reboot": false
 }
 ```
 

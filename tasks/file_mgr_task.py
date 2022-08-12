@@ -29,6 +29,10 @@ class FileMgrTask(Task):
         chars_written = file.write(msg["content"])
         print("write_file: chars_written: '" + str(chars_written) + "'")
         file.close()
+        if (msg["reboot"] is not None and msg["reboot"]):
+            print("Rebooting...")
+            machine.reset()
+
 
     # Reads the given file content to a file on the given path & writes back the file on the topic "file/content"
     def read_file(self, msg):
