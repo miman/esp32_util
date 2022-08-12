@@ -60,16 +60,21 @@ class MqttTask(MqttRoutingTask):
         
         del items[0]  # Remove thing address
         local_topic = '/'.join(items)
-        if ("led/" in local_topic and "/set" in local_topic):
-            obj=json.loads(msg)  # str -> object
-            items = local_topic.split("/")
-            dev_id = items[len(items)-2]
-            del items[len(items)-2]  # Remove device id from topic
-            local_topic = '/'.join(items)
-            self.event_bus.post(msg=obj, topic=local_topic, device_id=dev_id)
-        elif (local_topic == "txt/write"):
+        dev_id: str = None
+        for t in self.global_props.config["mqtt"]["mqtt_routing"]["topics_to_extract_device_id"]:
+            if (t["topic"] in local_topic):
+                dev_id = items[len(items)-t["location"]]
+                del items[len(items)-t["location"]]  # Remove device id from topic
+                local_topic = '/'.join(items)
+        
+        print("MQTT -> eventbus,  local_topic: [" + local_topic + "], dev_id: " + ("None" if (dev_id is None) else dev_id))
+        
+        if (local_topic == "txt/write"):
             obj = json.loads(msg)
             print("msg content: " + obj["content"])
+        else:
+            obj=json.loads(msg)  # str -> object
+            self.event_bus.post(msg=obj, topic=local_topic, device_id=dev_id)
 
     def handle_mqtt_sub(self, topic, msg):
         if (type(msg) == str):

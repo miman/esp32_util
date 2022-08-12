@@ -2,20 +2,15 @@
 config = {
     "thing_id": "ESP32_A",  # The id of this device
     "wifi": {
-        "active": True,  # If the Wifi should be active or not (pre-req for MQTT for example)
-        "ssid": "TBD",
-        "password": "TBD"
+        "active": True  # If the Wifi should be active or not (pre-req for MQTT for example)
     },
     "mqtt": {
         "active": True,  # If this module should be active or not
         "mqtt_type": "AWS",  # AWS or Normal
         "normal": {
-            "mqtt_host": "192.168.68.121",
-            "username": "TBD",
-            "password": "TBD"
+            "mqtt_host": "192.168.68.121"
         },
         "aws": {
-            "aws_host": "TBD",
             "aws_region": "eu-west-1",
             "keyfile_path": "/certs/thing-private.pem.key",
             "certfile_path": "/certs/thing-certificate.pem.crt"
@@ -27,13 +22,34 @@ config = {
                     "external": "btn/state"
                 },
                 {
+                    "internal": "file/content",
+                    "external": "file/content"
+                },
+                {
                     "internal": "rfid",
                     "external": "rfid"
                 }                
             ],
             "topics_to_subscribe_to": [  # - Which topics we should subscribe to from the offboard MQTT server
-                "txt/write",
-                "led/+/set"
+                "txt/#",
+                "led/#",
+                "file/write/#",
+                "file/read",
+                "file/remove/#"
+            ],
+            "topics_to_extract_device_id": [  # - Which topics we should extract the last item in the topic & place in device_id field
+                {
+                    "topic": "led",
+                    "location": 2
+                },
+                {
+                    "topic": "file/write",
+                    "location": 1
+                },
+                {
+                    "topic": "file/remove",
+                    "location": 1
+                }
             ]
         }
     },
@@ -80,6 +96,9 @@ config = {
         "active": True,  # If this module should be active or not
         # How often shall the heartbeat service send a heartbeat over MQTT
         "heartbeat_timeout_ms": 600000  # Every 10 mins
+    },
+    "file": {
+        "active": True
     },
     "rest_caller": {
         "active": False,  # If this module should be active or not

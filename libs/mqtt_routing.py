@@ -20,7 +20,7 @@ class MqttRoutingTask(Task):
         for ttst in self.global_props.config["mqtt"]["mqtt_routing"]["topics_to_subscribe_to"]:
             # We add the thing name first so we only subscribe to things addressed to this thing
             ext_topic = self.global_props.config["thing_id"] + "/" + ttst
-            print("Adding Topic to subscribe to: " + ext_topic)
+            # print("Adding Topic to subscribe to: " + ext_topic)
             self.topics_to_subscribe_to.append(ext_topic)
 
     # We subscribe to the internal topics on the event_bus so a callback is called

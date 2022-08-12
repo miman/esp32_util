@@ -8,11 +8,11 @@ class WifiConnection:
 
     # **************************************
     # Configure the ESP32 wifi as STAtion
-    def connect(self, config):
+    def connect(self, secrets):
         if not self.sta.isconnected(): 
           print('connecting to network...') 
           self.sta.active(True) 
-          self.sta.connect(config["wifi"]["ssid"], config["wifi"]["password"]) 
+          self.sta.connect(secrets["wifi"]["ssid"], secrets["wifi"]["password"]) 
           while not self.sta.isconnected(): 
             pass 
         print('network config:', self.sta.ifconfig())

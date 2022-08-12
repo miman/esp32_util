@@ -17,7 +17,6 @@ class LedTask(Task):
 
     def init(self, global_props: GlobalProperties):
         super().init(global_props)
-        self.event_bus = self.global_props.get_event_bus()
         self.enable_observations()
         for config in self.global_props.config["led"]["leds"]:
             print("Adding LED unit: " + config["id"])

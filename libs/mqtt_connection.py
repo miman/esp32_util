@@ -12,8 +12,8 @@ class MqttConnection(MqttConnectionBase):
     def connect_to_mqtt_srv(self, client_id: str, sub_callback, global_props):
         print('Connecting to MQTT...')
         self.mqtt = MQTTClient( client_id, global_props.config["mqtt"]["normal"]["mqtt_host"],
-                                user=global_props.config["mqtt"]["normal"]["username"],
-                                password=global_props.config["mqtt"]["normal"]["password"],
+                                user=global_props.secrets["mqtt"]["normal"]["username"],
+                                password=global_props.secrets["mqtt"]["normal"]["password"],
                                 keepalive = 10000, ssl = False )
         if sub_callback is not None:
             self.mqtt.set_callback(sub_callback)

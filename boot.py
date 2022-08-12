@@ -1,8 +1,4 @@
 # This file is executed on every boot (including wake-boot from deepsleep)
-#import esp
-#esp.osdebug(None)
-#import webrepl
-#webrepl.start()
 
 from libs.wifi_connection import WifiConnection
 from rest_call_test import RestCaller
@@ -12,6 +8,7 @@ from tasks.heartbeat_task import HeartbeatTask
 from libs.event_bus import EventBus
 from tasks.led_task import LedTask
 from tasks.btn_task import ButtonTask
+from tasks.file_mgr_task import FileMgrTask
 from libs.global_props import GlobalProperties
 from flow import Flow
 
@@ -29,6 +26,8 @@ def startActiveTasks(config, tasks):
         tasks.append( LedTask() )
     if (config["button"]["active"]):
         tasks.append( ButtonTask() )
+    if (config["file"]["active"]):
+        tasks.append( FileMgrTask() )
 
 try:
     global_props = GlobalProperties();
@@ -40,7 +39,7 @@ try:
     # Connect to Internet over Wifi
     if (global_props.config["wifi"]["active"]):
         wifi = WifiConnection()
-        wifi.connect(global_props.config)
+        wifi.connect(global_props.secrets)
     else:
         print("Wifi set not be activated in config/tasks_settings.py")
         
@@ -57,6 +56,15 @@ try:
 
 except KeyboardInterrupt:
     print('Application interrupted by CTRL-c')
+except OSError as error :
+    print("OSError: " + error)
+    print("Rebooting...")
+    machine.reset()
 finally:
     # Optional cleanup code
     print('Application ended')
+
+#import esp
+#esp.osdebug(None)
+#import webrepl
+#webrepl.start()

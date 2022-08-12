@@ -5,7 +5,7 @@ from libs.mqtt_connection_base import MqttConnectionBase
 class MqttAwsConnection(MqttConnectionBase):
     def __init__(self, global_props):
         # AWS endpoint parameters.
-        self.HOST: str = global_props.config["mqtt"]["aws"]["aws_host"]
+        self.HOST: str = global_props.secrets["mqtt"]["aws"]["aws_host"]
         self.REGION: str = global_props.config["mqtt"]["aws"]["aws_region"]
         self.AWS_ENDPOINT: str = '%s.iot.%s.amazonaws.com' % (self.HOST, self.REGION)
 

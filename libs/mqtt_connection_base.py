@@ -19,6 +19,7 @@ class MqttConnectionBase:
     # This function is used to subscribe to data from the given topic name
     # when data is received the sub_callback given in connect will be called
     def subscribe(self, topic_to_subscribe_to: str):
+        print("Subscribing to MQTT topic: " + topic_to_subscribe_to)
         self.mqtt.subscribe(topic_to_subscribe_to)
 
     # Will poll for new incoming message, in a blocking mode
