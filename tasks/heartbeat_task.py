@@ -47,5 +47,5 @@ class HeartbeatTask(Task):
             "content": "heartbeat",
             "freeMem": free_mem
         }
-        self.mqtt.send_mqtt_obj(obj_to_send=obj, topic='/heartbeat/')
+        self.mqtt.send_mqtt_obj(obj_to_send=obj, topic='heartbeat')
 

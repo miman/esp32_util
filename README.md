@@ -48,12 +48,12 @@ The config file contains the entire configuration for the application
 [PlantUML edit page for picture above](http://www.plantuml.com/plantuml/uml/ROxFIiGm48VlUOfXZqBs4MHTyS_11H71ysmxhM7JIKqcUX3VNIg4D5EltpVCxpiamIXvygOBqnoOME31XpFwvnXcYk8ehTJT9x4SSp8z2fun4NI11pUkJauV8hU1cJfnWPMu-Kh_kZStk9KmEW6kR7JZkzYoLq9WxscG_NNXxJfOsvWwhsJTryRCs5rm9DYzOhga7NmRW1h-HFt26tRC8e4t-94mofbGDkPbSDilI-y2eQ7tpjDfZ7_N1ieys3pNPAW5sfGfpSkQvasqbZL6gnzp8Expv7y1)
 
 # Components
-Information of the purpose with each component can be found in this page:
+Information of the purpose with each component can be found in this sub-page:
 [Components](docs/components.md)
 
 # Configuration
-Information of the content & purpose for the config files can be found in this page:
-[Components](docs/configuration.md)
+Information of the content & purpose for the config files can be found in this sub-page:
+[Configuration](docs/configuration.md)
 
 
 # Misc
