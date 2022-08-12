@@ -112,6 +112,7 @@ The payload for ***file/write*** is:
 
 ```
 {
+    "path": "dir/filename.py",
     "content": "File content"
 }
 ```
@@ -136,6 +137,7 @@ The payload for ***file/remove*** is:
 
 ```
 {
+    "path": "dir/filename.py",
     "content": "File content"
 }
 ```
@@ -148,7 +150,7 @@ The payload for ***file/content*** is:
 
 ```
 {
-    "path": "dir/filename.py"
+    "path": "dir/filename.py",
     "content": "File content"
 }
 ```

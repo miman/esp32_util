@@ -23,9 +23,9 @@ class FileMgrTask(Task):
         self.enable_observations()
 
     # Writes the given file content to a file on the given path
-    def write_file(self, msg, path):
-        print("write_file: path: '" + path + "', content: " + msg["content"])
-        file = open (path, "w") # TextIOWrapper
+    def write_file(self, msg):
+        print("write_file: path: '" + msg["path"] + "', content: " + msg["content"])
+        file = open (msg["path"], "w") # TextIOWrapper
         chars_written = file.write(msg["content"])
         print("write_file: chars_written: '" + str(chars_written) + "'")
         file.close()
@@ -43,18 +43,19 @@ class FileMgrTask(Task):
         self.event_bus.post(msg=reply, topic="file/content", device_id=None)
 
     # Removes the given file content to a file on the given path
-    def remove_file(self, msg, path):
-        print("remove_file: path: '" + path + "'")
-        os.remove(path)
+    def remove_file(self, msg):
+        print("remove_file: path: '" + msg["path"]  + "'")
+        file = open (msg["path"]) # TextIOWrapper
+        os.remove(file)
 
     def eventbus_callback(self, msg, topic: str, device_id: str):
         print("FileMgrTask: event received on topic: '" + topic + "'")
         if (topic == "file/write"):
-            self.write_file(msg, device_id)
+            self.write_file(msg)
         if (topic == "file/read"):
             self.read_file(msg)
         if (topic == "file/remove"):
-            self.remove_file(msg, device_id)
+            self.remove_file(msg)
 
     # **************************************
     # Process function, should be called from the main loop

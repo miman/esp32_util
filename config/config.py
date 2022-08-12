@@ -33,22 +33,14 @@ config = {
             "topics_to_subscribe_to": [  # - Which topics we should subscribe to from the offboard MQTT server
                 "txt/#",
                 "led/#",
-                "file/write/#",
+                "file/write",
                 "file/read",
-                "file/remove/#"
+                "file/remove"
             ],
             "topics_to_extract_device_id": [  # - Which topics we should extract the last item in the topic & place in device_id field
                 {
                     "topic": "led",
                     "location": 2
-                },
-                {
-                    "topic": "file/write",
-                    "location": 1
-                },
-                {
-                    "topic": "file/remove",
-                    "location": 1
                 }
             ]
         }
