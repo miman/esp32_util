@@ -71,3 +71,6 @@ Information of the content & purpose for the config files can be found in this s
 
 ## Micropython library aggregation site
 https://awesome-micropython.com/
+
+## ESP32 Pin layout
+https://lastminuteengineers.com/esp32-pinout-reference/

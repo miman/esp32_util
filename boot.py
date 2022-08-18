@@ -5,10 +5,10 @@ from rest_call_test import RestCaller
 from tasks.mqtt_task import MqttTask
 from tasks.rfid_task import RfidTask
 from tasks.heartbeat_task import HeartbeatTask
-from libs.event_bus import EventBus
 from tasks.led_task import LedTask
 from tasks.btn_task import ButtonTask
 from tasks.file_mgr_task import FileMgrTask
+from tasks.motor_task import MotorTask
 from libs.global_props import GlobalProperties
 from flow import Flow
 
@@ -28,6 +28,8 @@ def startActiveTasks(config, tasks):
         tasks.append( ButtonTask() )
     if (config["file"]["active"]):
         tasks.append( FileMgrTask() )
+    if (config["motor"]["active"]):
+        tasks.append( MotorTask() )
 
 try:
     global_props = GlobalProperties();

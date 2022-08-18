@@ -92,6 +92,19 @@ config = {
     "file": {
         "active": True
     },
+    "motor": {
+        "active": False,
+        "motors": [  # List of motors connected to the device
+            {
+                "id": "1",
+                "motor_pin": 2,
+                "reverse_ctrl_pin": 4,
+                "forward_ctrl_pin": 5,
+                "freq": 1000,
+                # "speed": 512  # If yá default start speed is needed
+            }
+        ]
+    },
     "rest_caller": {
         "active": False,  # If this module should be active or not
     }
