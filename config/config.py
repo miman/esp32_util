@@ -92,6 +92,17 @@ config = {
     "file": {
         "active": True
     },
+    "hcsr04": {
+        "active": True,  # If this module should be active or not
+        "sensors": [  # List of buttons connected to the device
+            {
+                "id": "dist_1",
+                "trigger_pin": 27,
+                "echo_pin": 26,
+                "time_between_runs_us": 250000
+            }
+        ]        
+    },
     "motor": {
         "active": False,
         "motors": [  # List of motors connected to the device

@@ -8,6 +8,7 @@ from tasks.heartbeat_task import HeartbeatTask
 from tasks.led_task import LedTask
 from tasks.btn_task import ButtonTask
 from tasks.file_mgr_task import FileMgrTask
+from tasks.hc_sr04_distance_sensor_task import HcSr04Task
 from tasks.motor_task import MotorTask
 from libs.global_props import GlobalProperties
 from flow import Flow
@@ -28,6 +29,8 @@ def startActiveTasks(config, tasks):
         tasks.append( ButtonTask() )
     if (config["file"]["active"]):
         tasks.append( FileMgrTask() )
+    if (config["hcsr04"]["active"]):
+        tasks.append( HcSr04Task() )
     if (config["motor"]["active"]):
         tasks.append( MotorTask() )
 
