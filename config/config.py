@@ -5,7 +5,7 @@ config = {
         "active": True  # If the Wifi should be active or not (pre-req for MQTT for example)
     },
     "mqtt": {
-        "active": True,  # If this module should be active or not
+        "active": False,  # If this module should be active or not
         "mqtt_type": "AWS",  # AWS or Normal
         "normal": {
             "mqtt_host": "192.168.68.121"
@@ -65,7 +65,7 @@ config = {
         "buttons": [  # List of buttons connected to the device
             {
                 "id": "ext1",
-                "pin": 15
+                "pin": 5
             },
             {
                 "id": "internal_boot",
@@ -74,7 +74,7 @@ config = {
         ]        
     },
     "rfid_reader": {
-        "active": True,  # If this module should be active or not
+        "active": False,  # If this module should be active or not
         "rfid_readers": [  # List of RFID readers connected to the device
             {
                 "id": "1",
@@ -93,7 +93,7 @@ config = {
         "active": True
     },
     "hcsr04": {
-        "active": True,  # If this module should be active or not
+        "active": False,  # If this module should be active or not
         "sensors": [  # List of buttons connected to the device
             {
                 "id": "dist_1",
@@ -111,8 +111,36 @@ config = {
                 "motor_pin": 2,
                 "reverse_ctrl_pin": 4,
                 "forward_ctrl_pin": 5,
-                "freq": 1000,
-                # "speed": 512  # If yá default start speed is needed
+                "freq": 1000   # defaults to 1000
+                # "speed": 512  # defaults to 0
+            }
+        ]
+    },
+    "lcd": {
+        "active": False,
+        "lcds": [  # List of motors connected to the device
+            {
+                "id": "lcd_1",
+                "scl_pin": 22,
+                "sda_pin": 21
+                # "total_rows": 2,    # defaults to 2
+                # "total_columns": 16, # defaults to 16
+                # "i2c_addr": 0x27,      # defaults to 0x27
+                # "freq": 10000,    # defaults to 10000
+                # "speed": 512  # defaults to 0
+            }
+        ]
+    },
+    "servo": {
+        "active": False,
+        "servos": [  # List of servos connected to the device
+            {
+                "id": "servo_1",
+                "ctrl_pin": 15,
+                "start_value": 50,
+                "min_value": 40,
+                "max_value": 115,
+                "freq": 50   # defaults to 50
             }
         ]
     },

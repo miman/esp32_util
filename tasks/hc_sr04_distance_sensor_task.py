@@ -6,7 +6,7 @@ from libs.task_base import Task
 from libs.event_bus import EventBus
 
 # Measure the distance to a device
-# Using HC-SR04 device
+# Using HC-SR04 Ultrasonic distance sensor device
 # Any 2 GPIO pins can be used
 class HcSr04Task(Task):
     def __init__(self, echo_timeout_us=500*2*30):

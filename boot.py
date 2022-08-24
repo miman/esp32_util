@@ -10,6 +10,8 @@ from tasks.btn_task import ButtonTask
 from tasks.file_mgr_task import FileMgrTask
 from tasks.hc_sr04_distance_sensor_task import HcSr04Task
 from tasks.motor_task import MotorTask
+from tasks.lcd_char_task import LcdCharTask
+from tasks.servo_task import ServoTask
 from libs.global_props import GlobalProperties
 from flow import Flow
 
@@ -33,7 +35,11 @@ def startActiveTasks(config, tasks):
         tasks.append( HcSr04Task() )
     if (config["motor"]["active"]):
         tasks.append( MotorTask() )
-
+    if (config["lcd"]["active"]):
+        tasks.append( LcdCharTask() )
+    if (config["servo"]["active"]):
+        tasks.append( ServoTask() )
+        
 try:
     global_props = GlobalProperties();
     global_props.set_thing_id(global_props.config["thing_id"])
