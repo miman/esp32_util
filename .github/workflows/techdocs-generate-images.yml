@@ -14,4 +14,4 @@ on:
 
 jobs:
   deploy:
-    uses: ./.github/workflows/techdocs-generate-images-base.yml@main
+    uses: ./.github/workflows/techdocs-generate-images-base.yml
