@@ -14,4 +14,4 @@ on:
 
 jobs:
   deploy:
-    uses: ./techdocs-generate-images-base.yml
+    uses: ./techdocs-generate-images-base.yml@master
