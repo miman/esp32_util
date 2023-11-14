@@ -6,7 +6,7 @@ name: Techdocs - Generate Images
 on:
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - "docs/**/**.drawio"
       - "**.py"
