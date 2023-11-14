@@ -1,0 +1,107 @@
+# This workflow generates images from drawio & PlantUML files and commits them to the trigger branch.
+
+name: Generate and Commit Techdocs Images
+
+on:
+  workflow_call:
+    inputs:
+      format:
+        required: false
+        default: svg
+        type: string
+        description: The format of the output, (jpg, png, svg) [default = svg]
+      puml-output:
+        required: false
+        default: /docs/generated/puml
+        type: string
+        description: The output folder where the PlantUML images will be located (relative to repo folder) [default = /docs/generated/puml]
+      drawio-output:
+        required: false
+        default: generated
+        type: string
+        description: The output folder where the DrawIO images will be located (relative to the folder where the files are) [default = generated]
+      puml-file-filter:
+        required: false
+        default: "*.ts"
+        type: string
+        description: The file filter to which files we should check for plantuml blocks to generate images from (ex '*.puml')
+      puml-file-filter-changed:
+        required: false
+        default: "./**/*.ts"
+        type: string
+        description: The file filter to which plantuml files we should check for if they have changed (ex './**/*.puml')
+      drawio-file-filter:
+        required: false
+        default: "docs/**/**.drawio"
+        type: string
+        description: The file filter to which drawio files we should check for (ex 'docs/**/**.drawio')
+      action-mode:
+        required: false
+        default: all
+        type: string
+        description: On which changes the job will run (reference / recent / all) [default = all]
+
+jobs:
+  generate-techdocs-images:
+    runs-on: ubuntu-latest
+    name: Generate images for techdocs
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Check if any Draw.io or PlantUML files has been changed
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            drawio:
+              - ${{ inputs.drawio-file-filter }}
+            plantuml:
+              - ${{ inputs.puml-file-filter-changed }}
+
+      - name: Export changed drawio files to image files
+        if: steps.changes.outputs.drawio == 'true'
+        uses: rlespinasse/drawio-export-action@v2
+        with:
+          format: ${{ inputs.format }}
+          transparent: true
+          output: ${{ inputs.drawio-output }}
+          action-mode: ${{ inputs.action-mode }}
+
+      - name: Get changed PlantUML files
+        id: list-puml-files
+        run: |
+          file_list=$(find . -type f -name "${{ inputs.puml-file-filter }}" -print)
+          space_separated_list=$(echo "$file_list" | tr '\n' ' ')
+          echo "files=$space_separated_list" >> $GITHUB_OUTPUT
+
+      - name: Export PlantUml blocks to image files
+        if: steps.changes.outputs.plantuml == 'true'
+        # TODO: preferrably filter out these files before this step so that we don't ignore real image generation errors
+        # Don't break build for files that have no PlantUML
+        continue-on-error: true
+        uses: cloudbees/plantuml-github-action@master
+        with:
+          args: -v -t${{ inputs.format }} ${{steps.list-puml-files.outputs.files}} -o ${GITHUB_WORKSPACE}${{ inputs.puml-output }}
+
+      - name: Check if there's any changed files that should be checked in
+        uses: tj-actions/verify-changed-files@v13
+        id: verify-changed-files
+        # Don't break the build if no files have been generated
+        continue-on-error: true
+        with:
+          files: |
+            **/*.${{ inputs.format }}
+
+      - name: Get author and committer info from HEAD commit
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        uses: rlespinasse/git-commit-data-action@v1
+
+      - name: Commit generated images to trigger branch
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "docs: (GitHub Actions) add images generated from PlantUML and draw.io"
+          commit_user_name: "${{ env.GIT_COMMIT_COMMITTER_NAME }}"
+          commit_user_email: "${{ env.GIT_COMMIT_COMMITTER_EMAIL }}"
+          commit_author: "${{ env.GIT_COMMIT_AUTHOR }}"

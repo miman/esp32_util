@@ -1,0 +1,17 @@
+# This workflow is triggered when a pull request is opened with changes to PlantUML (in ts files) and drawio files.
+# It will generate images from the changed PlantUML and draw.io files, and commit them to the feature branch.
+
+name: Techdocs - Generate Images
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "docs/**/**.drawio"
+      - "**.py"
+  workflow_dispatch: # Trigger manually on github.com
+
+jobs:
+  deploy:
+    uses: ./techdocs-generate-images-base.yml
