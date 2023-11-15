@@ -1,6 +1,6 @@
 # This workflow generates images from drawio & PlantUML files and commits them to the trigger branch.
 
-name: Generate and Commit Techdocs Images
+name: Generate and Commit PlantUML & DrawIO images
 
 on:
   workflow_call:

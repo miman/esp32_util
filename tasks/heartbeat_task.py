@@ -4,7 +4,7 @@ from libs.global_props import GlobalProperties
 from libs.task_base import Task
 import gc
 
-# This is a test class which sends a message to the AWS IoT topic '/heartbeat' Onece every X milliseconds
+# This is a test class which sends a message to the AWS IoT topic '/heartbeat' Once every X milliseconds
 class HeartbeatTask(Task):
     def __init__(self):
         super().__init__()

@@ -36,6 +36,11 @@ The process function will be called in each main loop run
 
 ![Tasks](docs/uml/generated/tasks-Page-1.svg "Overview")
 
+## Task information
+Information of the content & purpose for the different Tasks can be found in this sub-page:
+[Configuration](docs/tasks/tasks-main.md)
+
+
 ## Event bus
 Here is an overview of who uses the event bus
 
@@ -50,11 +55,7 @@ The config file contains the entire configuration for the application
 
 ![UML Page flow](docs/uml/generated/config-file-Page-1.svg "Overview")
 
-# Components
-Information of the purpose with each component can be found in this sub-page:
-[Components](docs/components.md)
-
-# Configuration
+## Configuration
 Information of the content & purpose for the config files can be found in this sub-page:
 [Configuration](docs/configuration.md)
 
