@@ -38,7 +38,7 @@ The process function will be called in each main loop run
 
 ## Task information
 Information of the content & purpose for the different Tasks can be found in this sub-page:
-[Configuration](docs/tasks/tasks-main.md)
+[Task info](docs/tasks/tasks-main.md)
 
 
 ## Event bus
