@@ -2,7 +2,10 @@
 This task will poll the buttons defined in the config file regurlarly and send information if a button is pressed or released to the eventbus
 
 ## Pins
-The LED only requires 1 output pin & ground
+The LED requires the following pins
+- GPIO output pin
+- power (3.3V)
+- ground
 
 ## Eventbus messages
 ### led/+/set

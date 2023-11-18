@@ -2,7 +2,11 @@
 This task will poll the buttons defined in the config file regurlarly and send information if a button is pressed or released to the eventbus
 
 ## Pins
-The button only requires 1 input pin & ground
+The button requires the following pins
+- GPIO input pin
+- power (3.3V)
+- ground
+
 
 ## Eventbus messages
 ### btn/state

@@ -53,7 +53,7 @@ class MqttTask(MqttRoutingTask):
     def handle_mqtt_msg(self, topic, msg):
         # print("> MQTT msg on [" + topic + "]: " + msg)
         items = topic.split("/")
-        if (items[0] != self.global_props.config["thing_id"]):
+        if (items[0] != self.global_props.thing_id):
             # The message was not for this device
             print("> MQTT received msg for other device on [" + topic + "]: " + msg)
             return
@@ -97,7 +97,7 @@ class MqttTask(MqttRoutingTask):
     # external topic with the device id added at the end
     def eventbus_callback(self, msg, topic: str, device_id: str):
         if (topic in self.topics_to_route_externally):
-            ext_topic = self.global_props.config["thing_id"] + "/" + self.topics_to_route_externally[topic]
+            ext_topic = self.global_props.thing_id + "/" + self.topics_to_route_externally[topic]
             if (device_id is not None):
                 ext_topic = ext_topic + "/" + device_id
             self.mqtt.send_mqtt_obj(msg, ext_topic)

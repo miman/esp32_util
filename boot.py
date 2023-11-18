@@ -42,7 +42,7 @@ def startActiveTasks(config, tasks):
         
 try:
     global_props = GlobalProperties();
-    global_props.set_thing_id(global_props.config["thing_id"])
+    global_props.set_thing_id(global_props.device_specific_config["thing_id"])
     
     flow: Flow = Flow(global_props)
     

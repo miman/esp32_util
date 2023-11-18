@@ -1,17 +1,12 @@
 # This file contains the configuration for the ESP32
 config = {
-    "thing_id": "ESP32_A",  # The id of this device
     "wifi": {
         "active": True  # If the Wifi should be active or not (pre-req for MQTT for example)
     },
     "mqtt": {
         "active": False,  # If this module should be active or not
         "mqtt_type": "AWS",  # AWS or Normal
-        "normal": {
-            "mqtt_host": "192.168.68.121"
-        },
         "aws": {
-            "aws_region": "eu-west-1",
             "keyfile_path": "/certs/thing-private.pem.key",
             "certfile_path": "/certs/thing-certificate.pem.crt"
         },
