@@ -14,6 +14,13 @@ from tasks.lcd_char_task import LcdCharTask
 from tasks.servo_task import ServoTask
 from libs.global_props import GlobalProperties
 from flow import Flow
+import utime
+
+# yields control for the given amount om milliseconds
+def yield_for_ms(ms):
+    start = utime.time()
+    while utime.time() - start < ms:
+        yield
 
 # Creates & returns the correct Task object based on task name
 def startActiveTasks(config, tasks):
@@ -64,6 +71,7 @@ try:
     while True: 
         for task in tasks:
             task.process()
+            yield_for_ms(200)
 
 except KeyboardInterrupt:
     print('Application interrupted by CTRL-c')
@@ -74,6 +82,7 @@ except OSError as error :
 finally:
     # Optional cleanup code
     print('Application ended')
+
 
 #import esp
 #esp.osdebug(None)

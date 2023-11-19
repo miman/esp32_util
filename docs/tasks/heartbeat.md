@@ -14,9 +14,10 @@ The payload for ***heartbeat*** is:
 
 ```
 {
-    "time": 4561237,
+    "time": 4561237,    // The current time
+    "uptime"; 1245,     // How long time in ms the device has been turned on
     "content": "heartbeat",
-    "freeMem": 47
+    "freeMem": 47       // The amount of free memory
 }
 ```
 

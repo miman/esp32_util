@@ -4,8 +4,8 @@ config = {
         "active": True  # If the Wifi should be active or not (pre-req for MQTT for example)
     },
     "mqtt": {
-        "active": False,  # If this module should be active or not
-        "mqtt_type": "AWS",  # AWS or Normal
+        "active": True,  # If this module should be active or not
+        "mqtt_type": "Normal",  # AWS or Normal
         "aws": {
             "keyfile_path": "/certs/thing-private.pem.key",
             "certfile_path": "/certs/thing-certificate.pem.crt"
@@ -23,6 +23,10 @@ config = {
                 {
                     "internal": "rfid",
                     "external": "rfid"
+                },
+                {
+                    "internal": "heartbeat",
+                    "external": "heartbeat"
                 }                
             ],
             "topics_to_subscribe_to": [  # - Which topics we should subscribe to from the offboard MQTT server
@@ -60,7 +64,7 @@ config = {
         "buttons": [  # List of buttons connected to the device
             {
                 "id": "ext1",
-                "pin": 5
+                "pin": 15
             },
             {
                 "id": "internal_boot",
@@ -69,7 +73,7 @@ config = {
         ]        
     },
     "rfid_reader": {
-        "active": False,  # If this module should be active or not
+        "active": True,  # If this module should be active or not
         "rfid_readers": [  # List of RFID readers connected to the device
             {
                 "id": "1",

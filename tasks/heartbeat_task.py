@@ -43,9 +43,9 @@ class HeartbeatTask(Task):
         free_mem = gc.mem_free()        
         self.last_update = time.ticks_ms()
         obj = {
-            "time": self.last_update,
+            "time": time.time(),
+            "uptime": self.last_update,
             "content": "heartbeat",
             "freeMem": free_mem
         }
-        self.mqtt.send_mqtt_obj(obj_to_send=obj, topic='heartbeat')
-
+        self.event_bus.post(msg=obj, topic="heartbeat", device_id="ping")

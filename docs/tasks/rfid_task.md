@@ -2,7 +2,19 @@
 This task will poll the RFID reader defined in the config file regurlarly and send information if a RFID card is noticed in fromt of the reader, if so the RFID number of the card will be sent to the eventbus
 
 ## Pins
-The RFID requires the SPI pins, ground & power (3.3V)
+The RFID requires the following pins
+- SPI pins
+  - SDA     (GPIO05)
+  - SCK     (GPIO18)
+  - MOSI    (GPIO23)
+  - MISO    (GPIO19)
+  - IRQ     (Nothing)
+  - RST     (GPIO04)
+- power     (3.3V)
+- ground
+
+requires the SPI pins, ground & power (3.3V)
+
 
 ## Eventbus messages
 ### rfid
