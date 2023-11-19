@@ -18,7 +18,7 @@ class HcSr04Task(Task):
         super().init(global_props)
         for config in self.global_props.config["hcsr04"]["sensors"]:
             print("Adding HC-SR04 distance sensor unit: " + config["id"])
-            trigger = machine.Pin(config["trigger_pin"], machine.Pin.IN, pull=None)
+            trigger = machine.Pin(config["trigger_pin"], machine.Pin.OUT, pull=None)
             trigger.value(0)
             echo = machine.Pin(config["echo_pin"], machine.Pin.IN, pull=None)
             self.sensors.append( {
@@ -76,11 +76,9 @@ class HcSr04Task(Task):
                     print("HC-SR04 distance: " + str(mm))
                     self.event_bus.post(msg=msg, topic="distanceSensor/value", device_id=sensor["id"])
 
+    # Send the pulse to trigger and listen on echo pin.
+    # We use the method `machine.time_pulse_us()` to get the microseconds until the echo is received.
     def _send_pulse_and_wait(self, sensor):
-        """
-        Send the pulse to trigger and listen on echo pin.
-        We use the method `machine.time_pulse_us()` to get the microseconds until the echo is received.
-        """
         sensor["trigger"].value(0) # Stabilize the sensor
         time.sleep_us(5)
         sensor["trigger"].value(1)
